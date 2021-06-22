@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Подключаем UIKit по ссылке с api.oneteacher.space -->
+    <link rel="stylesheet" href="css/uikit.css">
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css?family=Noto+Serif:400i&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Courgette&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Exo:600i&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
+        #preLoader{
+      
+        }
+        #preLoader{
+            position: fixed;
+            left: 0;
+            top:0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            transition: 5s;
+            width: 500px;
+            height: 500px;
+            position: fixed;
+            /*border:3px solid #ff4f00;*/
+            /*border: 2px solid white;*/
+            border-radius: 50%;
+            border-bottom:10px solid #ffffff;
+            animation: loader 4s linear infinite;
+        }  
+        #preLoaderBack{
+            position: fixed;
+            width:100%;
+            height:100%;
+            background-color: #ff4f00;
+            z-index: 9998;
+        } 
+        #preLoaderText{
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 300px;
+            height: 300px;
+            color: white;
+            font-size: 196px;
+            font-family: 'Comfortaa', cursive;
+            z-index: 10000;
+        }
+        #progress{
+            z-index: 1000;
+            position: fixed;
+            background-color: #ff4f00;
+            height: 10px;
+            transition: 1s ease-out;
+        }
+        @keyframes loader{
+            0%{
+                transform: rotate(0deg);
+            }
+            100%{
+                transform: rotate(360deg);
+            }
+        } 
+
+    </style>
+</head>
+
+<body>
+    <!--Прелоадер-->
+    <!--<div id="preLoader" class="preLoader uk-margin-auto-vertical uk-margin-auto"></div>
+    <div id="preLoaderBack" class="preLoaderBack"></div>
+    <div id="preLoaderText" class="preLoaderText uk-margin-auto-vertical uk-margin-auto uk-text-center uk-text-bold">L</div>
+    -->
+    <!-- НАЧАЛО: Шапка сайта -->
+    <div id="progress">  
+    </div>
+    <div class="uk-navbar-container" uk-sticky="bottom: #offset" >
+        <div class="uk-container uk-container-large">
+            <nav class="uk-navbar">
+
+                <!-- Логотип (название) -->
+                <div class="uk-navbar-left">
+                    <div class="uk-navbar-item uk-logo uk-text-bold uk-text-danger logo-text">
+                        Lime On
+                    </div>
+                </div>
+                <!-- Корзина -->
+                <div class="uk-navbar-right">
+                    <a href="index.html" class="uk-button uk-button-text uk-margin-center uk-margin-medium-right navbar-text"> Главная</a>
+                    <div uk-dropdown>
+                        <ul class="uk-nav uk-dropdown-nav">
+                            <li class="uk-active"><a href="#" class="uk-button-text navbar-text">В тренде</a></li>
+                            <li class="uk-active"><a href="#" class="uk-button-text navbar-text">Новинки</a></li>
+                            <li class="uk-active"><a href="catalog.html" class="uk-button-text navbar-text">Каталог товаров</a></li>
+                        </ul>
+                    </div>
+                    <a href="index.html" class="uk-button uk-button-text uk-margin-center uk-margin-medium-right navbar-text"> О компании</a>
+                    <a href="index.html" class="uk-button uk-button-text uk-margin-center uk-margin-medium-right navbar-text"> Коллекции</a>
+                </div>
+                <div class="uk-navbar-right">
+                    <a href="#" id="purchases" class="uk-button uk-button-danger uk-margin-xlarge-right"><span uk-icon="cart"></span></a>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- КОНЕЦ: Шапка сайта -->
+    <!-- НАЧАЛО: Тело страницы -->
+
+
+    <div class="uk-container uk-container-large">
+        <!-- НАЧАЛО: Внешний грид (разделяет на 2 колонки: контент и реклама) -->
+        <div uk-grid class="uk-padding-large uk-padding-remove-horizontal uk-grid-divider">
+
+            <!-- НАЧАЛО: Колонка содержимого (товары + комментарии) -->
+            <div class="uk-width-4-4">
+                <main>
+                    <!-- Заголовок + горизонтальная линия -->
+                    <hr class="uk-margin-medium-bottom">
+                    <h1 class="uk-margin-medium-bottom uk-text-center uk-text-bold text-rus"><span uk-icon="album"></span>Толстовки</h1>
+                    <hr class="uk-margin-medium-bottom">
+
+                    <!-- НАЧАЛО: Вложенный грид - сетка карточек товаров -->
+                    <div id="productsContainer" uk-grid="masonry: false" class="uk-child-width-1-4" uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 250; repeat: false">
+                    </div>
+                    <!-- КОНЕЦ: Вложенный грид - сетка карточек товаров -->
+                </main>
+            </div>
+            <!-- КОНЕЦ: Колонка содержимого (товары + комментарии) -->
+        </div>
+        <!-- КОНЕЦ: Внешний грид (разделяет на 2 колонки: контент и реклама) -->
+    </div>
+    <!-- КОНЕЦ: Тело страницы -->
+
+
+
+
+    <!-- Подключение скриптов для UIKit -->
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+
+    <!-- Подключаем HANDLEBARS -->
+    <script src="js/handlebars-v4.1.2.js"></script>
+
+    <!-- Подключаем файл функций -->
+    <script src="js/functions.js"></script>
+
+    <!-- Наш скрипт -->
+    <script>
+        // ----------------------------------------------------------------------------------------
+        // --- ЗАДАНИЕ 1. -------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+        /*let timerStart = setInterval(function(){
+            preLoaderBack.style.transition = "1s";
+            preLoaderBack.style.background = "white";
+            clearInterval(timerStart);
+        },3000);
+        let timer = setInterval(function(){
+            preLoader.remove();
+            preLoaderBack.remove();
+            preLoaderText.remove();
+            clearInterval(timer);
+        },5000);
+        */
+    </script>
+    <script>
+        /*document.addEventListener("wheel",function(){
+            document.getElementById("progress").style.width = (window.pageYOffset/(document.body.clientHeight-window.innerHeight))*100 + "%";
+            console.log(document.getElementById("progress").style.width);
+        });*/
+        let progressBar = setInterval(function(){            
+            document.getElementById("progress").style.width = (window.pageYOffset/(document.body.clientHeight-window.innerHeight))*100 + "%";
+            console.log(document.getElementById("progress").style.width);
+        },200);
+    </script>
+    <script>
+        "use strict";
+        // создаем объект запроса для получения списка товаров
+        let xhrLoadProd = new XMLHttpRequest();
+        // настраиваем на отправку методом GET на url, возвращающий json-массив товаров
+        xhrLoadProd.open('GET', 'http://api.oneteacher.space/jsonstorage/bf9dfa5e37853bac1c118ced856c7e9d', true);
+        xhrLoadProd.send();
+
+        xhrLoadProd.addEventListener('readystatechange', function () {
+            if (xhrLoadProd.readyState == 4 && xhrLoadProd.status == 200) {
+                // преобразуем JSON-ответ в массив
+                let productsArr = JSON.parse(xhrLoadProd.responseText);
+
+                // задаем шаблон для habdlebars.js
+                let templateCode = `
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-body uk-card-hover uk-padding-remove-bottom">
+                            <h3 class="uk-card-title uk-text-danger">
+                                {{title}}
+                            </h3>
+                            <div class="uk-inline-clip uk-transition-toggle" tabindex="0">
+                                <img src="{{img1}}" alt="">
+                                <img class="uk-transition-scale-up uk-position-cover" src="{{img2}}" alt="">
+                            </div>
+                            <div>
+                                <hr class="uk-margin-top">
+                                <div class="uk-text-small uk-text-muted uk-text-center text-rus">Код товара {{article}}</div>
+                                <div class="uk-text-large uk-text-bold uk-margin-bottom uk-text-center text-rus">{{price}} руб</div>
+                            </div>
+                            <footer>
+                                <hr>
+                                <a href="{{link}}" class="uk-button uk-button-danger"><span>Подробнее</span></a>
+                                <a  class="uk-button uk-button-default uk-align-right"><span uk-icon="cart"></span></a>
+                            </footer>
+                        </div>
+                    </div>
+                `;
+
+                // компилируем шаблон
+                let template = Handlebars.compile(templateCode);
+
+                // получаем div, в который будем производить добавление товаров
+                let productsContainer = document.querySelector('#productsContainer');
+
+                // очищаем содержимое контейнера (чтобы удалить примеры товаров, уже заданные в HTML-коде)
+                productsContainer.innerHTML = '';
+                //alert(productsArr);
+                // обходим массив товаров, полученный с сервера
+                for (let product of productsArr) {
+                    // рендерим шаблон для текущего товара
+                    if(product.type == "Мужская толстовка")
+                        productsContainer.innerHTML += template(product);
+                }
+            }
+        });
+        /*document.querySelector('#desButton').addEventListener("click",function(){
+            xhrLoadProd.addEventListener('readystatechange', function () {
+                if (xhrLoadProd.readyState == 4 && xhrLoadProd.status == 200) {
+                  // преобразуем JSON-ответ в массив
+                    let productsArr = JSON.parse(xhrLoadProd.responseText);
+                    for(let i=0; i<productsArr.length; i++){
+                        number = 
+                   }
+                }
+            });
+        });*/
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+    </script>
+</body>
+
+</html>

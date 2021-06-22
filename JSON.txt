@@ -1,0 +1,17 @@
+[
+ {
+  "article": 111111,
+	"title": "Marcelo Burlon",
+	"type": "Мужская толстовка",
+	"model": "Freak Wings Over Hoodie",
+	"color": "Black/Multicolor",
+	"img1": "https://img.brandshop.ru/cache/products/m/muzhskaya-tolstovka-marcelo-burlon-freak-wings-over-hoodie-black-multicolor-1_676x676.jpg",
+	"img2": "https://img.brandshop.ru/cache/products/m/muzhskaya-tolstovka-marcelo-burlon-freak-wings-over-hoodie-black-multicolor-5_676x676.jpg",
+	"img3": "https://img.brandshop.ru/cache/products/m/muzhskaya-tolstovka-marcelo-burlon-freak-wings-over-hoodie-black-multicolor-6_676x676.jpg",
+	"description": "",
+	"price": 17190,
+	"link": "file:///C:/Users/kcheg/Desktop/Домашка/shop/description.html/Maharishi/",
+	"check": 0,
+	"number": 1
+ }
+]

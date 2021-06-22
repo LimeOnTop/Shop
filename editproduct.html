@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Подключаем UIKit по ссылке с api.oneteacher.space -->
+    <link rel="stylesheet" href="css/uikit.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Noto+Serif:400i&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Courgette&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Exo:600i&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
+    </style>
+</head>
+
+<body>
+    <!-- НАЧАЛО: Шапка сайта -->
+    <div class="uk-navbar-container">
+        <div class="uk-container uk-container-large">
+            <nav class="uk-navbar">
+
+                <!-- Логотип (название) -->
+                <div class="uk-navbar-left">
+                    <div class="uk-navbar-item uk-logo uk-text-bold uk-text-danger logo-text">
+                        Админская панель
+                    </div>
+                </div>
+
+                <!-- Корзина -->
+                 <div class="uk-navbar-center">
+                    <a href="addproduct.html" class="uk-button uk-button-text uk-margin-right text-rus">Добавить товар</a>
+                    <a href="editproduct.html" class="uk-button uk-button-text uk-margin-right text-rus">Изменить товар</a>
+                    <a href="removeproduct.html" class="uk-button uk-button-text uk-margin-right text-rus">Удалить товар</a>
+                </div>
+
+            </nav>
+        </div>
+    </div>
+    <!-- КОНЕЦ: Шапка сайта -->
+
+
+
+    <div class="uk-container uk-container-small uk-flex uk-flex-center uk-flex-middle"
+        uk-height-viewport="offset-top: true">
+        <div class="uk-card uk-card-default uk-card-body uk-width-1-1">
+            <h1 class="uk-card-title">Изменить товар</h1>
+            <p>
+               Введите название и данные товара и нажмите кнопку "Изменить"
+            </p>
+            <input id="productArticle" type="text" class="uk-input uk-margin-bottom"
+                placeholder="Введите артикль товара">
+            <input id="productTitle" type="text" class="uk-input uk-margin-bottom"
+                placeholder="Введите название товара">
+            <input id="productType" class="uk-textarea uk-margin-bottom"
+                placeholder="Введите тип товара">
+            <input id="productModel" class="uk-textarea uk-margin-bottom"
+                placeholder="Введите модель товара">
+            <input id="productColor" class="uk-textarea uk-margin-bottom"
+                placeholder="Введите цвета товара">
+            <input id="productImg1" type="text" class="uk-input uk-margin-bottom"
+                placeholder="Введите ссылку на первое изображение">
+                <input id="productImg2" type="text" class="uk-input uk-margin-bottom"
+                placeholder="Введите ссылку на второе изображение">
+                <input id="productImg3" type="text" class="uk-input uk-margin-bottom"
+                placeholder="Введите ссылку на третье изображение">
+            <textarea id="productDescription" class="uk-textarea uk-margin-bottom"
+                placeholder="Введите описание"></textarea>
+            <input id="productPrice" type="number" class="uk-input uk-margin-bottom" placeholder="Введите цену товара">
+            <button id="editProductBtn" class="uk-button uk-button-default">Изменить</button>
+        </div>
+    </div>
+
+
+
+
+    <!-- Подключение скриптов для UIKit -->
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+
+    <!-- Подключаем HANDLEBARS -->
+    <script src="js/handlebars-v4.1.2.js"></script>
+
+
+    <script>
+        'use strict';
+
+
+        // ----------------------------------------------------------------------------------------
+        // --- ЗАДАНИЕ 3 --------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+
+        // При нажатии на кнопку "Добавить" мы будем делать следующее...
+        document.querySelector('#editProductBtn').addEventListener('click', function () {
+            // создаем объект запроса для получения текущего списка товаров
+            let xhrLoadProd = new XMLHttpRequest();
+            // настраиваем на отправку методом GET на url, возвращающий json-массив товаров
+            xhrLoadProd.open('GET', 'http://api.oneteacher.space/jsonstorage/bf9dfa5e37853bac1c118ced856c7e9d',
+                true);
+            xhrLoadProd.send();
+
+            xhrLoadProd.addEventListener('readystatechange', function () {
+                if(xhrLoadProd.readyState == 4 && xhrLoadProd.status == 200){
+                    // преобразуем JSON - ответ
+                    let productsArr = JSON.parse(xhrLoadProd.responseText);
+
+                    //  Создать новый объект по тому же формату, в котором у нас хранятся товары и заполнить его свойства 
+                    let editProduct = {
+                        article: document.querySelector('#productArticle').value,
+                        title: document.querySelector('#productTitle').value,
+                        type: document.querySelector('#productType').value,
+                        model: document.querySelector('#productModel').value,
+                        color: document.querySelector('#productColor').value,
+                        img1: document.querySelector('#productImg1').value,
+                        img2: document.querySelector('#productImg2').value,
+                        img3: document.querySelector('#productImg3').value,
+                        description: document.querySelector('#productDescription').value,
+                        price: document.querySelector('#productPrice').value,
+                        link: "http://description.html/" + document.querySelector('#productTitle').value + "/",
+                        check: 0
+                    };
+                    for(let product of productsArr){
+                        if(editProduct.article == product.article){
+                            product.title = editProduct.title;
+                            product.type = editProduct.type;
+                            product.model = editProduct.model;
+                            product.color = editProduct.color;
+                            product.img1 = editProduct.img1;
+                            product.img2 = editProduct.img2;
+                            product.img3 = editProduct.img3;
+                            product.description = editProduct.description;
+                            product.price = editProduct.price;
+                            product.link = editProduct.link;
+                            product.check = editProduct.check;
+                        }
+                    }
+
+                    // формируем новый запрос. Здесь мы будем обновлять содержимое JSON на сервере
+                    let xhrSender = new XMLHttpRequest();
+                    // для обновления требуется метод PUT
+                    xhrSender.open('PUT', 'http://api.oneteacher.space/jsonstorage/bf9dfa5e37853bac1c118ced856c7e9d', true);
+
+                    // добавляем заголовок к запросу. Данный заголовок обязателен для отправки JSON PUT-запросом
+                    xhrSender.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                    // отправляем запрос с обновленным массивом товаров на сервер, чтобы он его сохранил
+                    xhrSender.send(JSON.stringify(productsArr));
+
+                    // ответ можно не проверять, но при успешном завершении запроса выведем сообщение пользователю
+                    xhrSender.addEventListener('readystatechange', function () {
+                        // если запрос завершен ... 
+                        if (xhrSender.readyState == 4) {
+                            // и завершен без ошибок
+                            if (xhrSender.status == 200) {
+                                // выведем сообщение о том, что заявка принята
+                                alert('Товар успешно изменен!');
+                                clearInputs();
+                            } else {
+                                //а если запрос завершился с ошибкой, выведем сообщение об ошибке
+                                alert('Ошибка отправки. Попробуйте еще раз.');
+                            }
+                        }
+                    })
+                }
+            });
+        });
+        function clearInputs(){
+            document.querySelector('#productArticle').value = "";
+            document.querySelector('#productTitle').value = "";
+            document.querySelector('#productType').value = "";
+            document.querySelector('#productModel').value = "";
+            document.querySelector('#productColor').value = "";
+            document.querySelector('#productImg1').value = "";
+            document.querySelector('#productImg2').value = "";
+            document.querySelector('#productImg3').value = "";
+            document.querySelector('#productDescription').value = "";
+            document.querySelector('#productPrice').value = "";
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Подключаем UIKit по ссылке с api.oneteacher.space -->
+    <link rel="stylesheet" href="css/uikit.css">
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css?family=Noto+Serif:400i&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Courgette&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Exo:600i&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
+    </style>
+</head>
+
+<body>
+
+    <!-- НАЧАЛО: Шапка сайта -->
+    <div class="uk-navbar-container">
+        <div class="uk-container uk-container-large">
+            <nav class="uk-navbar">
+
+                <!-- Логотип (название) -->
+                <div class="uk-navbar-left">
+                    <div class="uk-navbar-item uk-logo uk-text-bold uk-text-danger logo-text">
+                        LimeOnShop
+                    </div>
+                </div>
+
+                <!-- Корзина -->
+                <div class="uk-navbar-right">
+                    <a href="index.html" class="uk-button uk-button-text uk-margin-center uk-margin-right navbar-text"> Главная</a>
+                    <a href="index.html" class="uk-button uk-button-text uk-margin-center uk-margin-right navbar-text"> О компании</a>
+                    <a href="index.html" class="uk-button uk-button-text uk-margin-center navbar-text"> Коллекции</a>
+                </div>
+                <div class="uk-navbar-right">
+                    <a href="#" class="uk-button uk-button-danger"><span uk-icon="cart"></span></a>
+                </div>
+
+            </nav>
+        </div>
+    </div>
+    <!-- КОНЕЦ: Шапка сайта -->
+
+    <!-- НАЧАЛО: Тело страницы -->
+    <div class="uk-container uk-container-large">
+        <main>
+            <h1 class="uk-text uk-margin-top uk-padding-large uk-padding-remove-horizontal uk-padding-remove-bottom text-rus"><span uk-icon="plus"></span> Описание товара</h1>
+            <hr class="uk-margin-medium-bottom">
+            <div class="uk-card uk-card-default uk-card-body uk-margin-top uk-margin-bottom uk-card-hover">
+                <div uk-grid class="uk-padding-large uk-padding-remove-horizontal uk-grid-divider">
+                    <div class="uk-width-4-4">
+                        <!-- Заголовок + горизонтальная линия -->
+                        <!-- НАЧАЛО: Вложенный грид - сетка карточек товаров -->
+                        <div id="descriptionProduct" uk-grid="masonry: false" class="uk-child-width-1-2">
+                        </div>
+                        <!-- КОНЕЦ: Вложенный грид - сетка карточек товаров -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- КОНЕЦ: Тело страницы -->
+
+
+
+
+    <!-- Подключение скриптов для UIKit -->
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+
+    <!-- Подключаем HANDLEBARS -->
+    <script src="js/handlebars-v4.1.2.js"></script>
+
+    <!-- Подключаем файл функций -->
+    <script src="js/functions.js"></script>
+
+
+    <!-- Наш скрипт -->
+    <script>
+        'use strict';
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+
+        // создаем объект запроса для получения списка товаров
+        let xhrLoadProd = new XMLHttpRequest();
+        // настраиваем на отправку методом GET на url, возвращающий json-массив товаров
+        xhrLoadProd.open('GET', 'http://api.oneteacher.space/jsonstorage/bf9dfa5e37853bac1c118ced856c7e9d', true);
+        xhrLoadProd.send();
+        xhrLoadProd.addEventListener('readystatechange', function () {
+            if (xhrLoadProd.readyState == 4 && xhrLoadProd.status == 200) {
+                // преобразуем JSON-ответ в массив
+                let productsArr = JSON.parse(xhrLoadProd.responseText);
+
+                // задаем шаблон для habdlebars.js
+                let templateCode = `
+                                <div>
+                                    <div class="uk-container-large">
+                                        <div class="uk-position-relative" uk-slideshow="animation: fade">
+                                            <ul class="uk-slideshow-items uk-height-max-large">
+                                                <li>
+                                                    <img src="{{img1}}" alt="" uk-cover>
+                                                </li>
+                                                <li>
+                                                    <img src="{{img2}}" alt="" uk-cover>
+                                                </li>
+                                                <li>
+                                                    <img src="{{img3}}" alt="" uk-cover>
+                                                </li>
+                                            </ul>
+                                            <div class="uk-position-bottom-center uk-position-small">
+                                                <ul class="uk-thumbnav">
+                                                    <li uk-slideshow-item="0"><a href="#"><img src="{{img1}}" width="100" alt=""></a></li>
+                                                    <li uk-slideshow-item="1"><a href="#"><img src="{{img2}}" width="100" alt=""></a></li>
+                                                    <li uk-slideshow-item="2"><a href="#"><img src="{{img3}}" width="100" alt=""></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h1 class="uk-text-title uk-text-danger uk-text-bold">{{title}}</h1>
+                                    <div class="uk-flex uk-flex-between">
+                                        <div class="text-align-left">
+                                            <p class="uk-text-muted text-rus">{{type}}</p>
+                                            <p class="uk-text-muted text-rus">{{model}}</p>
+                                            <p class="uk-text-muted text-rus">{{color}}</p>
+                                        </div>
+                                        <div>
+                                            <h2 class="uk-text-large uk-text-bold uk-align-right uk-margin-large-right">{{price}} р</h2>
+                                        </div>
+                                    </div>
+                                    <div class="uk-card uk-margin-medium-bottom">
+                                        <span class="uk-text-large uk-text uk-margin-center text-rus">{{description}}</span>
+                                    </div>
+                                    <footer uk-flex uk-card-footer>
+                                        <a  class="uk-button uk-button-danger uk-button-large text-rus"><span>Добавить в корзину</span></a>
+                                        <div class="uk-button uk-button-large uk-button-default uk-margin-left"> <span uk-icon="heart"></span> В избранное</div>
+                                    </footer>
+                                </div>
+                `;
+                // компилируем шаблон
+                let template = Handlebars.compile(templateCode);
+
+                // получаем div, в который будем производить добавление товаров
+                let descriptionProduct = document.querySelector('#descriptionProduct');
+                // очищаем содержимое контейнера (чтобы удалить примеры товаров, уже заданные в HTML-коде)
+                descriptionProduct.innerHTML = '';
+                //alert(productsArr);
+                // обходим массив товаров, полученный с сервера
+                for (let product of productsArr) {
+                    // рендерим шаблон для текущего товара
+                        descriptionProduct.innerHTML = template(product);
+                }
+            }
+        });
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+    </script>
+</body>
+
+</html>
